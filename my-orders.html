@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>My Orders - Yooki</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.orders-hero {
+  background: linear-gradient(135deg,#FFF5F7,#F5F0FF);
+  padding: 48px 24px 40px; text-align: center;
+}
+.search-box {
+  background: white; border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  padding: 32px; max-width: 560px; margin: 0 auto;
+}
+.search-box h3 { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
+.search-box p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+.search-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.search-tab {
+  flex: 1; padding: 9px; border: 2px solid #e8e8e8; border-radius: 12px;
+  background: white; font-family: 'Nunito',sans-serif; font-weight: 800;
+  font-size: 13px; cursor: pointer; transition: all .2s;
+}
+.search-tab.active { border-color: var(--blush); background: #fff5f7; color: var(--pink-dark); }
+.search-input-row { display: flex; gap: 10px; }
+.search-input-row input {
+  flex: 1; padding: 12px 16px; border: 2px solid #e8e8e8;
+  border-radius: var(--radius-sm); font-family: 'Nunito',sans-serif;
+  font-size: 15px; outline: none; transition: border-color .2s;
+}
+.search-input-row input:focus { border-color: var(--blush); }
+.btn-search {
+  background: var(--blush); color: var(--pink-dark); border: none;
+  padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 800;
+  font-size: 14px; cursor: pointer; font-family: 'Nunito',sans-serif;
+  transition: all .2s; white-space: nowrap;
+}
+.btn-search:hover { background: var(--pink-dark); color: white; }
+
+/* ORDER CARD */
+.order-card {
+  background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.07);
+  margin-bottom: 20px; overflow: hidden;
+}
+.order-card-head {
+  padding: 18px 22px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid #f5f5f5; flex-wrap: wrap; gap: 10px;
+}
+.order-code-tag { font-size: 16px; font-weight: 900; letter-spacing: 1px; }
+.order-date { font-size: 12px; color: #aaa; font-weight: 700; margin-top: 2px; }
+.order-card-body { padding: 18px 22px; }
+.order-items-list { margin-bottom: 16px; }
+.order-item-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid #f8f8f8;
+}
+.order-item-row:last-child { border: none; }
+.order-item-row img { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+.order-item-info { flex: 1; }
+.order-item-name { font-weight: 800; font-size: 14px; }
+.order-item-series { font-size: 12px; color: #aaa; }
+.order-item-price { font-weight: 900; font-size: 14px; color: var(--pink-dark); white-space: nowrap; }
+
+.order-summary-row {
+  display: flex; justify-content: space-between;
+  font-size: 14px; padding: 5px 0; border-bottom: 1px solid #f5f5f5;
+}
+.order-summary-row:last-child { border: none; font-weight: 900; font-size: 16px; color: var(--pink-dark); }
+.order-summary-row.disc { color: #3a9a5a; font-weight: 700; }
+
+/* STATUS TRACKER */
+.status-tracker { padding: 18px 22px 20px; background: #fafafa; }
+.status-tracker h4 { font-size: 13px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 16px; }
+.tracker-steps { display: flex; align-items: center; gap: 0; }
+.tracker-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+.tracker-step:not(:last-child)::after {
+  content: ''; position: absolute; top: 16px; left: 50%; width: 100%;
+  height: 3px; background: #e8e8e8; z-index: 0;
+}
+.tracker-step.done:not(:last-child)::after { background: var(--blush); }
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; background: #e8e8e8; position: relative; z-index: 1;
+  transition: all .3s;
+}
+.tracker-step.done .step-dot { background: var(--blush); }
+.tracker-step.current .step-dot { background: var(--pink-dark); box-shadow: 0 0 0 4px rgba(192,83,106,.2); }
+.step-label { font-size: 11px; font-weight: 800; margin-top: 6px; color: #bbb; text-align: center; }
+.tracker-step.done .step-label { color: var(--pink-dark); }
+.tracker-step.current .step-label { color: var(--pink-dark); font-size: 12px; }
+
+/* CANCELLED */
+.cancelled-banner {
+  background: #fff5f5; border-radius: 12px; padding: 14px 18px;
+  display: flex; align-items: center; gap: 10px;
+  color: #c0536a; font-weight: 800; font-size: 14px;
+}
+
+/* EMPTY / RESULT */
+.result-area { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+.no-result {
+  text-align: center; padding: 48px 24px;
+  background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.07);
+}
+.no-result .ei { font-size: 56px; margin-bottom: 14px; }
+.no-result h3 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+.no-result p { color: #aaa; font-size: 14px; }
+
+@media(max-width:480px){
+  .search-box { padding:20px; }
+  .search-tabs { flex-direction:column; gap:10px; }
+  .search-input-row { flex-direction:column; }
+  .search-input-row input { width:100%; }
+  .btn-search { width:100%; margin-top:10px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">New Collection</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="my-orders.html" class="active">My Orders</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a>
+    <a href="dashboard.html" style="background:#FFFFFF;color:#4d95ff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-line"></i> Admin</a>
+    <button class="hamburger" onclick="toggleNav()"><i class="fas fa-bars"></i></button>
+  </div>
+</div></nav>
+
+<!-- HERO + SEARCH -->
+<div class="orders-hero">
+  <span class="hero-pill" ...><i class="fas fa-box"></i> MY ORDERS</span>
+  <h1 style="font-size:clamp(28px,4vw,44px);font-weight:900;margin-bottom:10px;">Check Order Status</h1>
+  <p style="color:#aaa;margin-bottom:32px;">Enter your order code or WhatsApp number to view your order status</p>
+
+  <div class="search-box">
+    <div class="search-tabs">
+      <button class="search-tab active" onclick="setSearchMode('code',this)"><i class="fas fa-search"></i> Order Code</button>
+      <button class="search-tab" onclick="setSearchMode('phone',this)"><i class="fas fa-phone"></i> No. WhatsApp</button>
+    </div>
+    <div class="search-input-row">
+      <input type="text" id="searchInput" placeholder="Example: YKI-ABC12345" oninput="this.value=this.value.toUpperCase()">
+      <button class="btn-search" onclick="doSearch()"><i class="fas fa-search"></i> Check Status </button>
+    </div>
+    <p id="searchHint" style="font-size:12px;color:#bbb;margin-top:10px;text-align:left;">Format : YKI-XXXXXXXX</p>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="result-area" id="resultArea" style="display:none;"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/logo.png" alt="Yooki">
+      <p>A charming blind box collectible toy. Discover your favorite character!</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/yallistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/Yaliistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8619168913846" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="my-orders.html">My Orders</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp"></i> +8619168913846</p><p><i class="fas fa-envelope"></i> service@yallistudio.com</p><p><i class="fas fa-map-marker-alt"></i> Tanjung Pinang, Riau</p></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Yooki Blind Box. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="assets/js/app.js"></script>
+<script>
+let searchMode = 'code';
+
+function setSearchMode(mode, btn) {
+  searchMode = mode;
+  document.querySelectorAll('.search-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const input = document.getElementById('searchInput');
+  const hint = document.getElementById('searchHint');
+  if(mode === 'code') {
+    input.placeholder = 'Example : YKI-ABC12345';
+    input.oninput = () => input.value = input.value.toUpperCase();
+    hint.textContent = 'Format : YKI-XXXXXXXX (check your email/WhatsApp confirmation)';
+  } else {
+    input.placeholder = 'Example : 08123456789';
+    input.oninput = null;
+    hint.textContent = 'Enter the WhatsApp number you used during checkout';
+  }
+  document.getElementById('resultArea').style.display = 'none';
+  input.value = '';
+  input.focus();
+}
+
+async function doSearch() {
+  const val = document.getElementById('searchInput').value.trim();
+  if(!val) { toast('Please enter an order code or WhatsApp number !','err'); return; }
+
+  const btn = document.querySelector('.btn-search');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  btn.disabled = true;
+
+  try {
+    const param = searchMode==='code' ? 'code='+encodeURIComponent(val) : 'phone='+encodeURIComponent(val);
+    const res = await fetch('api/get-order.php?'+param);
+    const data = await res.json();
+    renderResults(data.orders||[], val);
+  } catch(e) {
+    // Fallback ke localStorage jika API error
+    const orders = JSON.parse(localStorage.getItem('yooki_orders') || '[]');
+    let results = [];
+    if(searchMode === 'code') {
+      results = orders.filter(o => o.code.toUpperCase() === val.toUpperCase());
+    } else {
+      const clean = val.replace(/[\s\-]/g,'');
+      results = orders.filter(o => {
+        const p = (o.phone||'').replace(/[\s\-]/g,'');
+        return p === clean || p.endsWith(clean) || clean.endsWith(p);
+      });
+    }
+    renderResults(results, val);
+  } finally {
+    btn.innerHTML = '<i class="fas fa-search"></i> Cek';
+    btn.disabled = false;
+  }
+}
+
+// Also check URL param on load
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if(code) {
+    document.getElementById('searchInput').value = code.toUpperCase();
+    doSearch();
+  }
+});
+
+// Enter key
+document.addEventListener('keydown', e => {
+  if(e.key === 'Enter') doSearch();
+});
+
+// ===== STATUS TRACKER =====
+const STATUS_STEPS = [
+  { key: 'pending',  icon: '<i class="fas fa-clock"></i>',        label: 'Pending' },
+  { key: 'paid',     icon: '<i class="fas fa-check-circle"></i>',  label: 'Paid' },
+  { key: 'shipped',  icon: '<i class="fas fa-truck"></i>',         label: 'Shipped' },
+  { key: 'done',     icon: '<i class="fas fa-star"></i>',          label: 'Done' },
+];
+
+function getStepIndex(status) {
+  return STATUS_STEPS.findIndex(s => s.key === status);
+}
+
+function renderTracker(status) {
+  if(status === 'cancelled') {
+    return `<div class="cancelled-banner"><i class="fas fa-times-circle"></i> Order has been cancelled</div>`;
+  }
+  const currentIdx = getStepIndex(status);
+  return `
+    <div class="status-tracker">
+      <h4>Shipping Status</h4>
+      <div class="tracker-steps">
+        ${STATUS_STEPS.map((step, i) => {
+          const isDone = i < currentIdx;
+          const isCurrent = i === currentIdx;
+          return `
+            <div class="tracker-step ${isDone?'done':''} ${isCurrent?'current':''}">
+              <div class="step-dot">${step.icon}</div>
+              <div class="step-label">${step.label}</div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ===== RENDER RESULTS =====
+function renderResults(results, query) {
+  const area = document.getElementById('resultArea');
+  area.style.display = 'block';
+
+ if(!results.length) {
+    area.innerHTML = `
+      <div class="no-result">
+        <div class="ei"><i class="fas fa-search" style="font-size:40px;color:#ddd;"></i></div>
+        <h3>Order Not Found</h3>
+        <p>No order found with ${searchMode==='code'?'order code':'WhatsApp number'} <strong>"${query}"</strong></p>
+        <p style="margin-top:8px;">Please make sure the code/number you entered is correct.</p>
+        <a href="products.html" class="btn-pri" style="margin-top:20px;display:inline-flex;"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+      </div>`;
+    return;
+  }
+
+  // Sort newest first
+  const sorted = [...results].sort((a,b) => new Date(b.date)-new Date(a.date));
+
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 style="font-size:18px;font-weight:900;">Ditemukan ${results.length} Pesanan</h3>
+      <button onclick="document.getElementById('resultArea').style.display='none'" style="background:none;border:none;color:#aaa;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;"><i class="fas fa-times"></i> Close</button>
+    </div>
+    ${sorted.map(o => renderOrderCard(o)).join('')}`;
+
+  area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderOrderCard(o) {
+  const dateStr = o.date ? new Date(o.date).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '-';
+  const statusLabels = { pending:'Menunggu Konfirmasi', paid:'Pembayaran Diterima', shipped:'Sedang Dikirim', done:'Pesanan Selesai', cancelled:'Dibatalkan' };
+  const statusColors = { pending:'#FAF0A0', paid:'#C1E0C8', shipped:'#B8DCF5', done:'#d4edda', cancelled:'#f8d7da' };
+  const statusTextColors = { pending:'#7a7a10', paid:'#1a6a3a', shipped:'#1a5a8a', done:'#155724', cancelled:'#721c24' };
+
+  return `
+    <div class="order-card">
+      <!-- HEAD -->
+      <div class="order-card-head">
+        <div>
+         <div class="order-code-tag"><i class="fas fa-box"></i> ${o.code}</div>
+          <div class="order-date">${dateStr}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <span style="background:${statusColors[o.status]||'#f0f0f0'};color:${statusTextColors[o.status]||'#666'};padding:5px 14px;border-radius:20px;font-size:12px;font-weight:800;">
+            ${statusLabels[o.status]||o.status}
+          </span>
+          <span style="font-size:12px;color:#aaa;font-weight:700;">${o.payment||'-'}</span>
+        </div>
+      </div>
+
+      <!-- ITEMS -->
+      <div class="order-card-body">
+        <div style="font-size:12px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Item Pesanan</div>
+        <div class="order-items-list">
+          ${(o.items||[]).map(i => `
+            <div class="order-item-row">
+              <img src="${i.img}" onerror="this.src='assets/img/logo.png'" alt="${i.name}">
+              <div class="order-item-info">
+                <div class="order-item-name">${i.name}</div>
+                <div class="order-item-series">${i.series||'Blind Box'} · x${i.qty}</div>
+              </div>
+              <div class="order-item-price">${rp(i.price * i.qty)}</div>
+            </div>`).join('')}
+        </div>
+
+        <!-- SUMMARY -->
+        <div style="background:#f8f8f8;border-radius:14px;padding:14px 18px;margin-bottom:14px;">
+          <div class="order-summary-row"><span>Subtotal</span><span>${rp(o.subtotal||0)}</span></div>
+          ${o.discount>0?`<div class="order-summary-row disc"><span>Diskon (${o.discCode||''})</span><span>− ${rp(o.discount)}</span></div>`:''}
+          <div class="order-summary-row"><span>Ongkos Kirim (${o.shipping?.name||'-'})</span><span>${rp(o.shipping?.price||0)}</span></div>
+          <div class="order-summary-row"><span>Total Bayar</span><span>${rp(o.total)}</span></div>
+        </div>
+
+        <!-- SHIPPING INFO -->
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;">
+          <div style="flex:1;min-width:180px;">
+            <div style="font-weight:800;color:#aaa;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Dikirim ke</div>
+            <div style="font-weight:700;">${o.name}</div>
+            <div style="color:#777;">${o.address||''}, ${o.city||''}</div>
+          </div>
+          <div>
+            <div style="font-weight:800;color:#aaa;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Kontak</div>
+            <div style="font-weight:700;">${o.phone||'-'}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS TRACKER -->
+      ${renderTracker(o.status)}
+    </div>`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>New Collection - Yooki</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html" class="active">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="my-orders.html">My Orders</a></li></ul>
+  <div class="nav-right"><a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a><a href="dashboard.html" style="background:#FFFFFF;color:#4d95ff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-line"></i> Admin</a><button class="hamburger" onclick="toggleNav()"><i class="fas fa-bars"></i></button></div>
+</div></nav>
+
+<div class="page-header">
+  <span class="pill"><i class="fas fa-star"></i> NEW EDITION</span>
+  <h1>New Collection</h1>
+  <p>Choose your favorite character from the latest Yooki collection!</p>
+</div>
+
+<section class="section">
+<div class="container">
+  <div class="filter-tabs" id="filterTabs">
+    <button class="tab-btn active" onclick="filterSeries('all',this)">All</button>
+  </div>
+  <div class="prod-grid" id="prodGrid"></div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/logo.png" alt="Yooki">
+      <p>A charming blind box collectible toy. Discover your favorite character!</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/yallistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/Yaliistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8619168913846" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="my-orders.html">My Orders</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp"></i> +8619168913846</p><p><i class="fas fa-envelope"></i> service@yallistudio.com</p><p><i class="fas fa-map-marker-alt"></i> Tanjung Pinang, Riau</p></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Yooki Blind Box. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="assets/js/app.js"></script>
+<script>
+const newProds = PRODUCTS.filter(p=>p.status==='new');
+const seriesList = [...new Set(newProds.map(p=>p.series))];
+let current = 'all';
+
+// Build tabs
+seriesList.forEach(s=>{
+  const btn = document.createElement('button');
+  btn.className='tab-btn';
+  btn.textContent=s;
+  btn.onclick=()=>filterSeries(s,btn);
+  document.getElementById('filterTabs').appendChild(btn);
+});
+
+function renderGrid(prods){
+  document.getElementById('prodGrid').innerHTML = prods.length ? prods.map(p=>`
+    <div class="prod-card">
+      <div class="prod-img">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='assets/img/logo.png'">
+        <div class="prod-badges">
+          <span class="badge-new">NEW</span>
+          ${p.stock<10?'<span class="badge-limit"><i class="fas fa-fire"></i> Limited</span>':''}
+        </div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-series">${p.series}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-price">${rp(p.price)}</div>
+      </div>
+      <div class="prod-actions">
+        <button class="btn-cart" onclick="addToCart(${p.id})"><i class="fas fa-plus"></i> Add to Cart</button>
+        <button class="btn-eye" onclick="location.href='detail.html?id=${p.id}'"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>`).join('') :
+    '<div class="empty-state" ...><div class="ei"><i class="fas fa-search" style="font-size:40px;color:#ddd;"></i></div><h3>No products found</h3></div>';
+}
+
+function filterSeries(s, btn){
+  current=s;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid(s==='all' ? newProds : newProds.filter(p=>p.series===s));
+}
+
+renderGrid(newProds);
+</script>
+</body></html>

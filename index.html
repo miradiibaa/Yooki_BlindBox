@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yooki - Blind Box Collectible</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="products.html">New Collection</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="my-orders.html">My Orders</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartBadge"></span></a>
+      <a href="dashboard.html" style="background:#FFFFFF;color:#4d95ff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-line"></i> Admin</a><button class="hamburger" onclick="toggleNav()"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-pill"><i class="fas fa-star"></i> NEW COLLECTION IS HERE</span>
+    <h1>Collect Your<br><span>Favourite Yooki!</span></h1>
+    <p>The cutest blind box plush toy collectible.<br>Every box is a surprise!</p>
+    <div class="hero-btns">
+      <a href="products.html" class="btn-pri"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+      <a href="gallery.html" class="btn-sec"><i class="fas fa-images"></i> See Gallery</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT YOOKI -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fas fa-book-open"></i> ABOUT YOOKI</span>
+      <h2>The Story of Yooki Blind Box</h2>
+      <p>Yooki is created to bring surprise every time you unbox. Each figure has its own unique personality and story, making your collection journey more exciting.</p>
+    </div>
+    <div class="story-grid">
+      <div class="story-card story-card-pink">
+        <h3>Unique Characters</h3>
+        <p>Yooki features adorable character designs with special details that make each figure feel unique.</p>
+      </div>
+      <div class="story-card story-card-purple">
+        <h3>Unboxing Experience</h3>
+        <p>Yooki blind boxes are more than toys — they are a fun surprise to open and guess which character is inside.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW COLLECTION -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fas fa-star"></i> NEW EDITION</span>
+      <h2>Latest Collection</h2>
+      <p>Limited edition drops — don't miss out!</p>
+    </div>
+    <div class="prod-grid" id="homeNewGrid"></div>
+    <div style="text-align:center;margin-top:32px;">
+      <a href="products.html" class="btn-pri">View Full Collection <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY YOOKI -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fas fa-heart"></i> WHY YOOKI</span>
+      <h2>Why Choose Yooki?</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon"><i class="fas fa-box-open"></i></div><h4>Surprise Every Box</h4><p>Every box contains a random character — fun to collect!</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-award"></i></div><h4>Premium Quality</h4><p>Soft premium cotton, safe and gentle.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-shipping-fast"></i></div><h4>Fast Shipping</h4><p>Delivered safely across Indonesia.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-gem"></i></div><h4>Limited Edition</h4><p>Limited stock — grab yours before it's gone!</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY PREVIEW -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fas fa-images"></i> GALLERY</span>
+      <h2>Classic Yooki Collection</h2>
+      <p>A beloved classic lineup.</p>
+    </div>
+    <div class="gallery-grid" id="homeGalleryGrid"></div>
+    <div style="text-align:center;margin-top:28px;">
+      <a href="gallery.html" class="btn-sec">View Gallery <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/logo.png" alt="Yooki">
+      <p>A charming blind box collectible toy. Discover your favorite character!</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/yallistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/Yaliistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8619168913846" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="my-orders.html">My Orders</a></li></ul></div>
+    <div class="footer-col"><h4>Info</h4><ul><li><a href="#">How to Order</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">FAQ</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp"></i> +8619168913846</p><p><i class="fas fa-envelope"></i> service@yallistudio.com</p><p><i class="fas fa-map-marker-alt"></i> Tanjung Pinang, Riau</p></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Yooki Blind Box. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="assets/js/app.js"></script>
+<script>
+// Home page grid
+const newProds = PRODUCTS.filter(p=>p.status==='new').slice(0,6);
+const galleryProds = PRODUCTS.filter(p=>p.status==='gallery').slice(0,6);
+
+document.getElementById('homeNewGrid').innerHTML = newProds.map(p=>`
+  <div class="prod-card">
+    <div class="prod-img">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='assets/img/logo.png'">
+      <div class="prod-badges">
+        <span class="badge-new"><i class="fas fa-star"></i> NEW</span>
+        ${p.stock<10?'<span class="badge-limit"><i class="fas fa-fire"></i> Limited</span>':''}
+      </div>
+    </div>
+    <div class="prod-info">
+      <div class="prod-series">${p.series}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-price">${rp(p.price)}</div>
+    </div>
+    <div class="prod-actions">
+      <button class="btn-cart" onclick="addToCart(${p.id})"><i class="fas fa-plus"></i> Add to Cart</button>
+      <button class="btn-eye" onclick="location.href='detail.html?id=${p.id}'"><i class="fas fa-eye"></i></button>
+    </div>
+  </div>
+`).join('');
+
+document.getElementById('homeGalleryGrid').innerHTML = galleryProds.map(p=>`
+  <div class="gallery-card">
+    <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='assets/img/logo.png'">
+    <div class="gallery-overlay">
+      <span class="badge-gallery">Gallery</span>
+      <h4>${p.name}</h4>
+      <span>${p.series}</span>
+    </div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

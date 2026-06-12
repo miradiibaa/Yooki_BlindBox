@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Checkout - Yooki</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="my-orders.html">My Orders</a></li></ul>
+  <div class="nav-right"><a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a><a href="dashboard.html" style="background:#FFFFFF;color:#4d95ff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-line"></i> Admin</a><button class="hamburger" onclick="toggleNav()"><i class="fas fa-bars"></i></button></div>
+</div></nav>
+
+<section class="section">
+<div class="container">
+  <h2 style="font-size:30px;font-weight:900;margin-bottom:28px;"><i class="fas fa-box"></i> Checkout</h2>
+  <div class="checkout-wrap">
+    <!-- LEFT -->
+    <div>
+      <div class="co-card">
+        <h3><i class="fas fa-user"></i> Shipping Information</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="cName" placeholder="Your name..."></div>
+          <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="cPhone" placeholder="08xxxxxxxxxx"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="cEmail" placeholder="you@example.com"></div>
+        <div class="form-group"><label>Full Address *</label><textarea id="cAddress" rows="3" placeholder="Street, neighborhood, district..."></textarea></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City *</label>
+            <select id="cCity" onchange="loadShipping()">
+              <option value="">Select a city...</option>
+              <option value="Jakarta" data-zone="1">Jakarta</option>
+              <option value="Surabaya" data-zone="1">Surabaya</option>
+              <option value="Bandung" data-zone="1">Bandung</option>
+              <option value="Yogyakarta" data-zone="1">Yogyakarta</option>
+              <option value="Tanjung Pinang" data-zone="2">Tanjung Pinang</option>
+              <option value="Batam" data-zone="2">Batam</option>
+              <option value="Medan" data-zone="2">Medan</option>
+              <option value="Palembang" data-zone="2">Palembang</option>
+              <option value="Makassar" data-zone="3">Makassar</option>
+              <option value="Jayapura" data-zone="3">Jayapura</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Postal Code</label><input type="text" id="cPostal" placeholder="12345"></div>
+        </div>
+      </div>
+
+      <div class="co-card">
+        <h3><i class="fas fa-truck"></i> Shipping Method</h3>
+        <div class="ship-opts" id="shipOpts"><p style="color:var(--muted);font-size:14px;">Please select a city first!</p></div>
+      </div>
+
+      <div class="co-card">
+        <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
+        <div class="pay-opts">
+          <div class="pay-opt" onclick="selPay('transfer',this)">
+            <label><input type="radio" name="pay" value="transfer"> <i class="fas fa-university"></i> Transfer Bank (BCA / Mandiri / BRI)</label>
+          </div>
+          <div class="pay-opt" onclick="selPay('cod',this)">
+            <label><input type="radio" name="pay" value="cod"> <i class="fas fa-money-bill-wave"></i> COD — Pay on Delivery</label>
+          </div>
+          <div class="pay-opt" onclick="selPay('ewallet',this)">
+            <label><input type="radio" name="pay" value="ewallet"> <i class="fas fa-wallet"></i> E-Wallet</label>
+            <div class="ewallet-opts" id="ewalletOpts">
+              <div class="ew-btn active" onclick="event.stopPropagation()">
+                <div style="font-size:22px;margin-bottom:4px;"><i class="fas fa-wallet"></i></div><div>DANA</div>
+              </div>
+              <div class="ew-btn disabled" onclick="event.stopPropagation()">
+                <div style="font-size:22px;margin-bottom:4px;"><i class="fas fa-mobile-alt"></i></div><div>GoPay</div>
+                <div style="font-size:10px;color:#bbb;">Soon</div>
+              </div>
+              <div class="ew-btn disabled" onclick="event.stopPropagation()">
+                <div style="font-size:22px;margin-bottom:4px;"><i class="fas fa-money-bill-wave"></i></div><div>OVO</div>
+                <div style="font-size:10px;color:#bbb;">Soon</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="ord-sum">
+      <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+      <div id="ordItems"></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:2px solid #f5f5f5;">
+        <div class="sum-row"><span>Subtotal</span><span id="sSubtotal">Rp 0</span></div>
+        <div class="sum-row discount" id="sDiscRow" style="display:none"><span id="sDiscLabel">Discount</span><span id="sDiscount">- Rp 0</span></div>
+        <div class="sum-row"><span>Shipping Cost</span><span id="sShip">Rp 0</span></div>
+        <div class="sum-row total"><span>Total</span><span id="sTotal">Rp 0</span></div>
+      </div>
+      <button class="btn-checkout-go" onclick="doOrder()" style="margin-top:16px;">Pay Now <i class="fas fa-arrow-right"></i></button>
+      <p style="text-align:center;font-size:12px;color:#ccc;margin-top:10px;"><i class="fas fa-shield-alt"></i> Secure transaction</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- QR Dana Modal -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3><i class="fas fa-wallet"></i> Pay with DANA</h3>
+    <p class="sub">Scan the QR code below to complete payment</p>
+    <div style="display:flex;justify-content:center;margin-bottom:14px;">
+      <div class="qr-frame"><img src="assets/img/qr_dana.jpeg" alt="QR DANA"></div>
+    </div>
+    <div class="qr-total" id="qrTotal">Rp 0</div>
+    <p class="qr-note">Make sure the transfer amount matches exactly!</p>
+    <button class="btn-paid" onclick="confirmPay()"><i class="fas fa-check"></i> I Have Paid</button>
+    <button class="btn-cancel" onclick="document.getElementById('qrModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
+<!-- Transfer Modal -->
+<div class="modal" id="tfModal">
+  <div class="modal-box">
+    <h3><i class="fas fa-university"></i> Transfer Info</h3>
+    <p class="sub">Transfer to one of the accounts below:</p>
+    <div class="bank-list">
+      <p><strong>BCA</strong> — 1234567890 a/n Yooki Store</p>
+      <p><strong>Mandiri</strong> — 0987654321 a/n Yooki Store</p>
+      <p><strong>BRI</strong> — 1122334455 a/n Yooki Store</p>
+    </div>
+    <div class="qr-total" id="tfTotal">Rp 0</div>
+    <p class="qr-note">Send transfer proof to our WhatsApp!</p>
+    <button class="btn-paid" onclick="confirmPay()"><i class="fas fa-check"></i> I Have Transferred</button>
+    <button class="btn-cancel" onclick="document.getElementById('tfModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="assets/js/app.js"></script>
+<script>
+let selPayMethod='', selShip=null, grandTotal=0;
+
+function loadShipping(){
+  const el=document.getElementById('cCity');
+  const zone=parseInt(el.selectedOptions[0]?.dataset.zone||0);
+  const container=document.getElementById('shipOpts');
+  selShip=null;
+  if(!zone){container.innerHTML='<p style="color:var(--muted);font-size:14px;">Please select a city first!</p>';calcSummary();return;}
+  const rates=SHIPPING[zone]||SHIPPING[1];
+  container.innerHTML=rates.map((r,i)=>`
+    <div class="ship-opt" onclick="pickShip(${i},${r.price},'${r.name}',this)" id="sopt_${i}">
+      <input type="radio" name="ship" value="${r.id}">
+      <div class="ship-info"><div class="ship-name">${r.name}</div><div class="ship-desc">${r.desc}</div></div>
+      <div class="ship-price">${rp(r.price)}</div>
+    </div>`).join('');
+  pickShip(0,rates[0].price,rates[0].name,document.getElementById('sopt_0'));
+}
+
+function pickShip(i,price,name,el){
+  document.querySelectorAll('.ship-opt').forEach(e=>{ e.classList.remove('sel'); e.querySelector('input').checked=false; });
+  el.classList.add('sel'); el.querySelector('input').checked=true;
+  selShip={price,name}; calcSummary();
+}
+
+function selPay(method,el){
+  selPayMethod=method;
+  document.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('ewalletOpts').classList.toggle('show',method==='ewallet');
+}
+
+function calcSummary(){
+  const cart=getCart();
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const disc=parseFloat(localStorage.getItem('yooki_disc')||0);
+  const discLabel=localStorage.getItem('yooki_disc_label')||'';
+  const ship=selShip?selShip.price:0;
+  grandTotal=Math.max(0,sub-disc+ship);
+
+  document.getElementById('ordItems').innerHTML=cart.map(i=>`
+    <div class="oi-mini">
+      <img src="${i.img}" alt="${i.name}" onerror="this.src='assets/img/logo.png'">
+      <div class="oi-mini-info"><div class="oi-mini-name">${i.name}</div><div class="oi-mini-qty">x${i.qty}</div></div>
+      <div class="oi-mini-price">${rp(i.price*i.qty)}</div>
+    </div>`).join('')||'<p style="color:var(--muted);font-size:14px;">Cart is empty</p>';
+
+  document.getElementById('sSubtotal').textContent=rp(sub);
+  document.getElementById('sShip').textContent=rp(ship);
+  document.getElementById('sTotal').textContent=rp(grandTotal);
+  document.getElementById('qrTotal').textContent=rp(grandTotal);
+  document.getElementById('tfTotal').textContent=rp(grandTotal);
+  if(disc>0){
+    document.getElementById('sDiscRow').style.display='flex';
+    document.getElementById('sDiscLabel').textContent='Discount ('+discLabel+')';
+    document.getElementById('sDiscount').textContent='− '+rp(disc);
+  }
+}
+
+function doOrder(){
+  const name=document.getElementById('cName').value.trim();
+  const phone=document.getElementById('cPhone').value.trim();
+  const addr=document.getElementById('cAddress').value.trim();
+  const city=document.getElementById('cCity').value;
+  if(!name||!phone||!addr||!city){toast('Please complete shipping details!','err');return;}
+  if(!selShip){toast('Please select a shipping method!','err');return;}
+  if(!selPayMethod){toast('Please select a payment method!','err');return;}
+  if(!getCart().length){toast('Cart is empty!','err');return;}
+
+  if(selPayMethod==='ewallet') document.getElementById('qrModal').classList.add('show');
+  else if(selPayMethod==='transfer') document.getElementById('tfModal').classList.add('show');
+  else confirmPay();
+}
+
+function confirmPay(){
+  document.getElementById('qrModal').classList.remove('show');
+  document.getElementById('tfModal').classList.remove('show');
+
+  const cart=getCart();
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const disc=parseFloat(localStorage.getItem('yooki_disc')||0);
+  const discCode=localStorage.getItem('yooki_disc_label')||'';
+
+  const orderData = {
+    name:    document.getElementById('cName').value,
+    phone:   document.getElementById('cPhone').value,
+    email:   document.getElementById('cEmail').value,
+    address: document.getElementById('cAddress').value,
+    city:    document.getElementById('cCity').value,
+    shipping_name: selShip.name,
+    shipping_cost: selShip.price,
+    subtotal:      sub,
+    discount_code: discCode,
+    discount_amount: disc,
+    total:   grandTotal,
+    payment: selPayMethod==='ewallet'?'DANA':selPayMethod==='transfer'?'Transfer Bank':'COD',
+    items:   cart
+  };
+
+  // Kirim ke database via PHP API
+  fetch('api/save-order.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(orderData)
+  })
+  .then(r => r.json())
+  .then(res => {
+    if(res.success) {
+      // Bersihkan cart & promo
+      localStorage.removeItem('yooki_cart');
+      localStorage.removeItem('yooki_disc');
+      localStorage.removeItem('yooki_disc_label');
+      localStorage.removeItem('yooki_promo_code');
+      location.href = 'success.html?code=' + res.order_code;
+    } else {
+      toast('Gagal menyimpan order: ' + (res.message||''), 'err');
+    }
+  })
+  .catch(() => {
+    toast('Koneksi error. Pastikan XAMPP aktif!', 'err');
+  });
+}
+
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+calcSummary();
+</script>
+</body></html>

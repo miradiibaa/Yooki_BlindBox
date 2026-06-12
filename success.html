@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Order Success - Yooki</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li></ul>
+  <div class="nav-right"><a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a></div>
+</div></nav>
+
+<div class="success-wrap">
+  <div class="success-box" id="successBox">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <h2>Order Confirmed!</h2>
+    <p class="sub">Thank you for shopping at Yooki! Your order is being processed.</p>
+    <div class="order-code" id="orderCode">YKI-XXXXXXXX</div>
+    <p style="font-size:13px;color:#aaa;margin-bottom:16px;"><i class="fas fa-lightbulb"></i> Save this code to track your order on the <strong>My Orders</strong> page.</p>
+    <div class="success-detail" id="successDetail"></div>
+    <p style="font-size:13px;color:#ccc;margin-bottom:22px;">Save your order code for tracking. Confirm via WhatsApp.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="index.html" class="btn-pri"><i class="fas fa-home"></i> Back to Home</a>
+      <a href="products.html" class="btn-sec"><i class="fas fa-shopping-bag"></i> Shop Again</a>
+      <a href="my-orders.html" id="myOrdersLink" class="btn-pri"><i class="fas fa-box"></i> Track My Order </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/logo.png" alt="Yooki">
+      <p>A charming blind box collectible toy. Discover your favorite character!</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/yallistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/Yaliistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8619168913846" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="my-orders.html">My Orders</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp"></i> +8619168913846</p><p><i class="fas fa-envelope"></i> service@yallistudio.com</p><p><i class="fas fa-map-marker-alt"></i> Tanjung Pinang, Riau</p></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Yooki Blind Box. All rights reserved.</div>
+</footer>
+
+<script src="assets/js/app.js"></script>
+<script>
+const params=new URLSearchParams(location.search);
+const code=params.get('code');
+document.getElementById('orderCode').textContent=code||'YKI-XXXXXXXX';
+
+const orders=JSON.parse(localStorage.getItem('yooki_orders')||'[]');
+const order=orders.find(o=>o.code===code);
+if(order){
+  const rows=[
+    ['Name',order.name],
+    ['City',order.city],
+    ['Shipping',order.shipping?.name||'-'],
+    ['Payment',order.payment],
+    ...(order.discount>0?[['Discount','− '+rp(order.discount),'discount']]:[]),
+    ['Shipping Cost',rp(order.shipping?.price||0)],
+    ['Total Paid',rp(order.total)],
+  ];
+  document.getElementById('successDetail').innerHTML=rows.map(r=>`
+    <div class="sd-row ${r[2]||''}"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+}
+</script>
+</body></html>
+<script>
+// Update My Orders link with order code
+if(code) {
+  const link = document.getElementById('myOrdersLink');
+  if(link) link.href = 'my-orders.html?code=' + code;
+}
+</script>

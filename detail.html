@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Product Details - Yooki</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Yooki"></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html" class="active">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="my-orders.html">My Orders</a></li></ul>
+  <div class="nav-right"><a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a><a href="dashboard.html" style="background:#FFFFFF;color:#4d95ff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-line"></i> Admin</a><button class="hamburger" onclick="toggleNav()"><i class="fas fa-bars"></i></button></div>
+</div></nav>
+
+<section class="section">
+<div class="container">
+  <a href="products.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--pink-dark);font-weight:800;text-decoration:none;margin-bottom:24px;"><i class="fas fa-arrow-left"></i> Back</a>
+  <div class="detail-wrap" id="detailWrap"></div>
+  <div style="margin-top:56px;" id="relatedSection"></div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/logo.png" alt="Yooki">
+      <p>A charming blind box collectible toy. Discover your favorite character!</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/yallistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/Yaliistudio" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8619168913846" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">New Collection</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="my-orders.html">My Orders</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp"></i> +8619168913846</p><p><i class="fas fa-envelope"></i> service@yallistudio.com</p><p><i class="fas fa-map-marker-alt"></i> Tanjung Pinang, Riau</p></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Yooki Blind Box. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="assets/js/app.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const id = parseInt(params.get('id'));
+const p = PRODUCTS.find(x=>x.id===id);
+
+if(!p || p.status!=='new') { location.href='products.html'; }
+
+let qty=1;
+document.getElementById('detailWrap').innerHTML=`
+  <div class="detail-imgs">
+    <div class="main-img"><img src="${p.img}" alt="${p.name}" id="mainImg"></div>
+    <div class="thumb-row">
+      <img src="${p.img}" class="active" onclick="setMain(this,'${p.img}')">
+      ${p.img2?`<img src="${p.img2}" onclick="setMain(this,'${p.img2}')">`:''}
+    </div>
+  </div>
+  <div class="detail-info">
+    <span class="pill"><i class="fas fa-star"></i> NEW EDITION</span>
+    <div class="series-lbl">${p.series}</div>
+    <h1>${p.name}</h1>
+    <div class="detail-price">${rp(p.price)}</div>
+    <div class="detail-meta">
+      <div class="meta-row"><span style="color:var(--muted)">Stock</span><strong>${p.stock} pcs</strong></div>
+      <div class="meta-row"><span style="color:var(--muted)">Size</span><strong>±12cm</strong></div>
+      <div class="meta-row"><span style="color:var(--muted)">Material</span><strong>Soft Cotton Premium</strong></div>
+    </div>
+    <p class="detail-desc">A blind box plush toy from the ${p.series} series. Each box contains one random character — perfect for expanding your collection! Approximately 12cm, made with premium materials, ideal as a gift or personal keepsake.</p>
+    <div class="qty-detail">
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQty(-1)">-</button>
+        <span class="qty-num" id="qtyNum">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <button class="btn-cart" style="flex:1;" onclick="addMultiple()"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+    </div>
+  </div>
+`;
+
+function setMain(el, src){
+  document.getElementById('mainImg').src=src;
+  document.querySelectorAll('.thumb-row img').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+function changeQty(d){ qty=Math.max(1,qty+d); document.getElementById('qtyNum').textContent=qty; }
+function addMultiple(){
+  for(let i=0;i<qty;i++) addToCart(p.id, i>0);
+  toast(qty+'x '+p.name+' added!','ok');
+}
+
+// Related
+const related = PRODUCTS.filter(x=>x.series===p.series&&x.id!==p.id&&x.status==='new').slice(0,4);
+if(related.length){
+  document.getElementById('relatedSection').innerHTML=`
+    <h3 style="font-size:22px;font-weight:900;margin-bottom:20px;">Related Products</h3>
+    <div class="prod-grid">${related.map(r=>`
+      <div class="prod-card">
+        <div class="prod-img"><img src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='assets/img/logo.png'">
+          <div class="prod-badges"><span class="badge-new"><i class="fas fa-star"></i> NEW</span></div>
+        </div>
+        <div class="prod-info"><div class="prod-series">${r.series}</div><div class="prod-name">${r.name}</div><div class="prod-price">${rp(r.price)}</div></div>
+        <div class="prod-actions">
+          <button class="btn-cart" onclick="addToCart(${r.id})"><i class="fas fa-plus"></i> Add to Cart</button>
+          <button class="btn-eye" onclick="location.href='detail.html?id=${r.id}'"><i class="fas fa-eye"></i></button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+</script>
+</body></html>
