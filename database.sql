@@ -1,12 +1,6 @@
--- ========================================
--- YOOKI DATABASE
--- Import file ini di phpMyAdmin
--- ========================================
-
 CREATE DATABASE IF NOT EXISTS yooki_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE yooki_db;
 
--- Tabel orders
 CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_code VARCHAR(50) UNIQUE NOT NULL,
@@ -26,7 +20,6 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabel order_items
 CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
