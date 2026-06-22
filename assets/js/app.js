@@ -1,8 +1,4 @@
-// ===== YOOKI APP.JS =====
-
-// ---- DATA ----
 const PRODUCTS = [
-  // NEW
   { id:1, name:'Versatile Idol - Grey', series:'Versatile Idol Series', price:125000, stock:50, img:'assets/img/new/versatile/abu.jpg', img2:'assets/img/new/versatile/1box.webp', status:'new' },
   { id:2, name:'Versatile Idol - Brown', series:'Versatile Idol Series', price:125000, stock:45, img:'assets/img/new/versatile/brownie.webp', img2:'assets/img/new/versatile/1box.webp', status:'new' },
   { id:3, name:'Versatile Idol - Pink Purple', series:'Versatile Idol Series', price:125000, stock:30, img:'assets/img/new/versatile/pinyu.webp', img2:'assets/img/new/versatile/1box.webp', status:'new' },
@@ -14,7 +10,6 @@ const PRODUCTS = [
   { id:9, name:'V11 Bunny Boo - Cream & Brown', series:'V11 Bunny Boo Cutely Rabbit', price:145000, stock:25, img:'assets/img/new/v11/krinie.jpg', img2:'assets/img/new/v11/1box.jpg', status:'new' },
   { id:10, name:'V11 Bunny Boo - Pink, Yellow & Blue', series:'V11 Bunny Boo Cutely Rabbit', price:145000, stock:20, img:'assets/img/new/v11/pikublue.jpg', img2:'assets/img/new/v11/1box.jpg', status:'new' },
   { id:11, name:'V11 Bunny Boo - White & Black', series:'V11 Bunny Boo Cutely Rabbit', price:145000, stock:15, img:'assets/img/new/v11/utitam.jpg', img2:'assets/img/new/v11/1box.jpg', status:'new' },
-  // GALLERY
   { id:12, name:'V10 Gourmet - Green', series:'V10 Hug Gourmet Restaurant', price:0, stock:0, img:'assets/img/old/v10/ijo.jpg', img2:'assets/img/old/v10/1box2.webp', status:'gallery' },
   { id:13, name:'V10 Gourmet - Pink', series:'V10 Hug Gourmet Restaurant', price:0, stock:0, img:'assets/img/old/v10/pinkeu.jpg', img2:'assets/img/old/v10/1box2.webp', status:'gallery' },
   { id:14, name:'V10 Gourmet - Purple', series:'V10 Hug Gourmet Restaurant', price:0, stock:0, img:'assets/img/old/v10/unyu.jpg', img2:'assets/img/old/v10/1box2.webp', status:'gallery' },
@@ -44,7 +39,6 @@ const CITIES = [
   {name:'Makassar',zone:3},{name:'Jayapura',zone:3},{name:'Sorong',zone:3},
 ];
 
-// ---- HELPERS ----
 function rp(n){ return 'Rp '+new Intl.NumberFormat('id-ID').format(n); }
 
 function toast(msg, type=''){
@@ -56,7 +50,6 @@ function toast(msg, type=''){
   t._t = setTimeout(()=>{ t.className='toast'; }, 3000);
 }
 
-// ---- CART ----
 function getCart(){ try{ return JSON.parse(localStorage.getItem('yooki_cart')||'[]'); }catch{ return []; } }
 function saveCart(c){ localStorage.setItem('yooki_cart',JSON.stringify(c)); updateBadge(); }
 
@@ -79,15 +72,13 @@ function addToCart(id, silent=false){
   if(!silent) toast(p.name+' added to cart!','ok');
 }
 
-// ---- NAVBAR ----
 function toggleNav(){
   document.querySelector('.nav-links').classList.toggle('open');
 }
 
-// ---- INIT ----
+
 document.addEventListener('DOMContentLoaded',()=>{
   updateBadge();
-  // set active nav
   const cur = location.pathname.split('/').pop()||'index.html';
   document.querySelectorAll('.nav-links a').forEach(a=>{
     if(a.getAttribute('href')===cur) a.classList.add('active');
